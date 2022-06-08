@@ -11,10 +11,15 @@ const routes = [
       component: () => import(/* webpackChunkName: "AboutPage" */ '@/modules/pokemon/pages/AboutPage') 
     },
     { 
-      path: '/id', 
-      component: () => import(/* webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage')  
+      path: '/:id', 
+      name: 'pokemon-id',
+      component: () => import(/* webpackChunkName: "PokemonPage" */ '@/modules/pokemon/pages/PokemonPage'),
+      props: ( router ) => {
+        const id = Number( router.params.id );
+        return  isNaN( id ) ? { id: 1} : { id } 
+      }
     },
-    { 
+    {  
       path: '/:pathMatch(.*)*', 
       component: () => import(/* webpackChunkName: "NoPageFound" */ '@/modules/shared/pages/NoPageFound')  
     },
