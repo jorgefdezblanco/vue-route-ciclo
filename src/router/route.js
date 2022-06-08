@@ -70,18 +70,39 @@ const routes = [
     routes, 
   })
 
-  router.beforeEach((to, from, next)=>{
-    console.log({to, from, next});
+  // router.beforeEach((to, from, next)=>{
+  //   console.log({to, from, next});
 
-    const random = Math.random() * 100
-    if(random > 50){
-      console.log('autenticado');
-      next()
-    }else{
-      console.log(random, "bloqueado por el beforeEach")
-      next({name: 'pokemon-home'})
-    }
+  //   const random = Math.random() * 100
+  //   if(random > 50){
+  //     console.log('autenticado');
+  //     next()
+  //   }else{
+  //     console.log(random, "bloqueado por el beforeEach")
+  //     next({name: 'pokemon-home'})
+  //   }
 
+
+  // })
+
+  const canAccess = () =>{
+    return new Promise( resolve => {
+      const random = Math.random() * 100
+      if(random > 50){
+        console.log('autenticado');
+        resolve(true)
+      }else{
+        console.log(random, "bloqueado por el beforeEach")
+        resolve(false)
+        // next({name: 'pokemon-home'})
+      }
+    })
+  }
+
+  router.beforeEach( async (to, from, next)=>{
+      const authorized = await canAccess()
+
+      authorized ? next() : next({name: 'pokemon-home'})
 
   })
 
