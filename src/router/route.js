@@ -70,4 +70,19 @@ const routes = [
     routes, 
   })
 
+  router.beforeEach((to, from, next)=>{
+    console.log({to, from, next});
+
+    const random = Math.random() * 100
+    if(random > 50){
+      console.log('autenticado');
+      next()
+    }else{
+      console.log(random, "bloqueado por el beforeEach")
+      next({name: 'pokemon-home'})
+    }
+
+
+  })
+
   export default router;
